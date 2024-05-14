@@ -35,7 +35,7 @@ export default async function Navbar() {
 										href="/api/auth/logout"
 										className={buttonVariants({ size: 'sm', variant: 'ghost' })}
 									>
-										Dashboard
+										Dashboard ✨
 									</Link>
 								)}
 								<Link
