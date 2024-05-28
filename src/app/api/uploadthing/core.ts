@@ -24,13 +24,25 @@ export const ourFileRouter = {
 			if (!configId) {
 				const configuration = await db.configuration.create({
 					data: {
-						width: width,
-						height: height,
+						imageUrl: file.url,
+						width: width || 500,
+						height: height || 500,
 					},
 				});
-			}
 
-			return { configId };
+				return { configId: configuration.id };
+			} else {
+				const updatedConfiguration = await db.configuration.update({
+					where: {
+						id: configId,
+					},
+					data: {
+						croppedImageUrl: file.url,
+					},
+				});
+
+				return { configId: updatedConfiguration.id };
+			}
 		}),
 } satisfies FileRouter;
 
