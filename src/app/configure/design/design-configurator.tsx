@@ -21,6 +21,10 @@ import { ArrowRight, Check, ChevronsUpDown } from 'lucide-react';
 import HandleComponent from '@/components/handle-component';
 import { useUploadThing } from '@/lib/uploadthing';
 import { useToast } from '@/components/ui/use-toast';
+import { useMutation } from '@tanstack/react-query';
+import { TConfig } from '@/lib/types';
+import { saveConfig } from './actions';
+import { useRouter } from 'next/navigation';
 
 type DesignConfiguratorProps = {
 	configId: string;
@@ -39,7 +43,25 @@ type TOptions = {
 };
 
 export default function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfiguratorProps) {
+	const router = useRouter();
 	const { toast } = useToast();
+
+	const { mutate } = useMutation({
+		mutationKey: ['save-config'],
+		mutationFn: async (args: TConfig) => {
+			await Promise.all([saveConfiguration(), saveConfig(args)]);
+		},
+		onError: () => {
+			toast({
+				title: 'Something went wrong!',
+				description: 'There was an error on out end. Please try again.',
+				variant: 'destructive',
+			});
+		},
+		onSuccess: () => {
+			router.push(`/configure/preview?id=${configId}`);
+		},
+	});
 
 	const [options, setOptions] = useState<TOptions>({
 		color: COLORS[0],
@@ -295,7 +317,15 @@ export default function DesignConfigurator({ configId, imageUrl, imageDimensions
 							<Button
 								size="sm"
 								className="w-full"
-								onClick={saveConfiguration}
+								onClick={() =>
+									mutate({
+										configId,
+										color: options.color.value,
+										finish: options.finish.value,
+										material: options.material.value,
+										model: options.model.value,
+									})
+								}
 							>
 								Continue <ArrowRight className="h-4 w-4 ml-1.5 inline" />
 							</Button>

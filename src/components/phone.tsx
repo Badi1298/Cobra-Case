@@ -28,7 +28,7 @@ export default function Phone({ imgSrc, dark = false, className, ...props }: Pho
 			<div className="absolute -z-10 inset-0">
 				<img
 					src={imgSrc}
-					className="object-cover"
+					className="object-cover min-w-full min-h-full"
 					alt="overlaying phone image"
 				/>
 			</div>
