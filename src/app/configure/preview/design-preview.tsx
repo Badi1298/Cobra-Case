@@ -38,10 +38,10 @@ export default function DesignPreview({ configuration }: DesignPreviewProps) {
 	if (finish === 'textured') totalPrice += PRODUCT_PRICES.finish.textured;
 	if (material === 'polycarbonate') totalPrice += PRODUCT_PRICES.material.polycarbonate;
 
-	const {} = useMutation({
-		mutationKey: ['get-checkout-session'],
-		mutationFn: () => {},
-	});
+	// const {} = useMutation({
+	// 	mutationKey: ['get-checkout-session'],
+	// 	mutationFn: () => {},
+	// });
 
 	return (
 		<>
