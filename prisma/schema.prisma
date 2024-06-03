@@ -8,9 +8,9 @@ datasource db {
 }
 
 enum OrderStatus {
-    fulfilled
-    shipped
     awaiting_shipment
+    shipped
+    fulfilled
 }
 
 enum PhoneModel {
@@ -48,4 +48,54 @@ model Configuration {
     model           PhoneModel?
     material        CaseMaterial?
     finish          CaseFinish?
+    Order           Order[]
+}
+
+model User {
+    id        String   @id @default(cuid())
+    email     String
+    order     Order[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Order {
+    id                String           @id @default(cuid())
+    configurationId   String
+    configuration     Configuration    @relation(fields: [configurationId], references: [id])
+    userId            String
+    user              User             @relation(fields: [userId], references: [id])
+    amount            Float
+    isPaid            Boolean          @default(false)
+    status            OrderStatus      @default(awaiting_shipment)
+    shippingAddressId String?
+    shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id])
+    billingAddressId  String?
+    billingAddress    BillingAddress?  @relation(fields: [billingAddressId], references: [id])
+    createdAt         DateTime         @default(now())
+    updatedAt         DateTime         @updatedAt
+}
+
+model ShippingAddress {
+    id          String  @id @default(cuid())
+    name        String
+    street      String
+    city        String
+    postalCode  String
+    country     String
+    state       String?
+    phoneNumber String?
+    orders      Order[]
+}
+
+model BillingAddress {
+    id          String  @id @default(cuid())
+    name        String
+    street      String
+    city        String
+    postalCode  String
+    country     String
+    state       String?
+    phoneNumber String?
+    orders      Order[]
 }

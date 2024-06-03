@@ -10,4 +10,5 @@ module.exports = {
 	arrowParens: 'always',
 	singleAttributePerLine: true,
 	'space-before-function-paren': ['error', 'never'],
+	plugins: ['prettier-plugin-tailwindcss'],
 };
