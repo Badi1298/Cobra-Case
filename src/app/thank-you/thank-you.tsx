@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getPaymentStatus } from './actions';
 import { useSearchParams } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
+import PhonePreview from '@/components/phone-preview';
 
 export default function ThankYou() {
 	const searchParams = useSearchParams();
@@ -43,7 +44,7 @@ export default function ThankYou() {
 	}
 
 	const { configuration, billingAddress, shippingAddress, amount } = data;
-	const { color } = configuration;
+	const { color, croppedImageUrl } = configuration;
 
 	return (
 		<div className="bg-white">
@@ -69,7 +70,12 @@ export default function ThankYou() {
 					</div>
 				</div>
 
-				<div className="mt-4 flex space-x-6 overflow-hidden rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/10 lg:rounded-2xl"></div>
+				<div className="mt-4 flex space-x-6 overflow-hidden rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/10 lg:rounded-2xl">
+					<PhonePreview
+						color={color || 'black'}
+						croppedImageUrl={croppedImageUrl || ''}
+					/>
+				</div>
 			</div>
 		</div>
 	);
