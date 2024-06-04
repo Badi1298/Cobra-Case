@@ -1,8 +1,11 @@
 import Link from 'next/link';
-import MaxWidthWrapper from './max-width-wrapper';
+
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+
 import { buttonVariants } from './ui/button';
 import { ArrowRightIcon } from 'lucide-react';
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+
+import MaxWidthWrapper from './max-width-wrapper';
 
 export default async function Navbar() {
 	const { getUser } = getKindeServerSession();
@@ -32,7 +35,7 @@ export default async function Navbar() {
 								</Link>
 								{isAdmin && (
 									<Link
-										href="/"
+										href="/dashboard"
 										className={buttonVariants({ size: 'sm', variant: 'ghost' })}
 									>
 										Dashboard ✨
