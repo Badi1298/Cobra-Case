@@ -7,6 +7,8 @@ import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatPrice } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import StatusDropdown from './status-dropdown';
 
 const WEEKLY_GOAL = 500;
 const MONTHLY_GOAL = 2000;
@@ -66,6 +68,41 @@ export default async function Page() {
 							</CardFooter>
 						</Card>
 					</div>
+
+					<h1 className="text-4xl font-bold tracking-tight">Incoming Orders</h1>
+
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHead>Customer</TableHead>
+								<TableHead className="hidden sm:table-cell">Status</TableHead>
+								<TableHead className="hidden sm:table-cell">Purchase Date</TableHead>
+								<TableHead className="text-right">Amount</TableHead>
+							</TableRow>
+						</TableHeader>
+
+						<TableBody>
+							{orders.map((order) => (
+								<TableRow
+									key={order.id}
+									className="bg-accent"
+								>
+									<TableCell>
+										<div className="font-medium">{order.shippingAddress?.name}</div>
+										<div className="hidden text-sm text-muted-foreground sm:inline">{order.user.email}</div>
+									</TableCell>
+									<TableCell className="hidden sm:table-cell">
+										<StatusDropdown
+											id={order.id}
+											orderStatus={order.status}
+										/>
+									</TableCell>
+									<TableCell className="hidden sm:table-cell">{order.createdAt.toLocaleDateString()}</TableCell>
+									<TableCell className="text-right">{formatPrice(order.amount)}</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
 				</div>
 			</div>
 		</div>
